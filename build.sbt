@@ -32,9 +32,13 @@ val circeDerivationVersion   = "0.11.0-M1"
 val macwireVersion           = "2.3.2"
 val circeVersion             = "0.11.1"
 val catsVersion              = "1.6.0"
+val logbackVersion           = "1.2.3"
+val scalaLoggingVersion      = "3.9.2"
 
 libraryDependencies ++= Seq(
   "io.getquill" %% "quill-async-mysql" % "3.1.0",
+  "ch.qos.logback"             % "logback-classic"         % logbackVersion,
+  "com.typesafe.scala-logging" %% "scala-logging"          % scalaLoggingVersion,
   "de.heikoseeberger"          %% "akka-http-circe"        % akkaHttpJsonVersion,
   "com.typesafe.akka"          %% "akka-http"              % akkaHttpVersion,
   "de.heikoseeberger"          %% "akka-http-circe"        % akkaHttpJsonVersion,

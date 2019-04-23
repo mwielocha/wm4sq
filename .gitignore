@@ -77,4 +77,6 @@ flycheck_*.el
 # projectiles files
 .projectile
 
+prod-application.conf
+
 
