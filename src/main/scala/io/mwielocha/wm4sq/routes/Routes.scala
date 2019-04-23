@@ -1,27 +1,30 @@
 package io.mwielocha.wm4sq.routes
 
-import akka.http.scaladsl.model.HttpRequest
-import akka.http.scaladsl.{Http, model}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{HttpRequest, _}
 import akka.http.scaladsl.model.headers.Location
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives.{get, path, _}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.unmarshalling.Unmarshal
+import cats.data.OptionT
+import cats.implicits._
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.circe.Json
 import io.getquill.{MysqlAsyncContext, SnakeCase}
+import io.mwielocha.wm4sq.ical.ICalendarSupport
+import io.mwielocha.wm4sq.ical.Implicits._
+import io.mwielocha.wm4sq.model.forsquare.Checkins
 import io.mwielocha.wm4sq.model.{AccessToken, User}
-import cats.implicits._
-import cats.data.OptionT
 
 import scala.concurrent.Future
 
-class Routes(config: Config) extends ErrorAccumulatingCirceSupport with LazyLogging {
+class Routes(config: Config) extends ErrorAccumulatingCirceSupport with ICalendarSupport with LazyLogging {
 
   private val ctx = new MysqlAsyncContext(SnakeCase, "db")
 
+  private val host = config.getString("host")
   private val clientId = config.getString("4sq.client_id")
   private val clientSecret = config.getString("4sq.client_secret")
 
@@ -45,7 +48,7 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with LazyLogg
                   params = Uri.Query(
                     "client_id" -> clientId,
                     "response_type" -> "code",
-                    "redirect_uri" -> s"http://127.0.0.1:3000/finalize?id=${user.id}"
+                    "redirect_uri" -> s"$host/finalize?id=${user.id}"
                   )
                   uri = Uri("https://foursquare.com/oauth2/authenticate").withQuery(params)
                 } yield HttpResponse(status = StatusCodes.TemporaryRedirect, headers = Location(uri) :: Nil)
@@ -58,7 +61,7 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with LazyLogg
                 "client_id" -> clientId,
                 "client_secret" -> clientSecret,
                 "grant_type" -> "authorization_code",
-                "redirect_uri" -> s"http://127.0.0.1:3000/finalize?id=$id",
+                "redirect_uri" -> s"$host/finalize?id=$id",
                 "code" -> code
               )
 
@@ -102,10 +105,10 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with LazyLogg
                     uri = Uri("https://api.foursquare.com/v2/users/self/checkins").withQuery(params)
                   )
                   response <- OptionT.liftF(Http().singleRequest(request))
-                  result <- OptionT.liftF {
-                    Unmarshal(response.entity).to[Json]
+                  checkins <- OptionT.liftF {
+                    Unmarshal(response.entity).to[Checkins]
                   }
-                } yield result).value
+                } yield checkins.asCalendar).value
               }
             }
           }

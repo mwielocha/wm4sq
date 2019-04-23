@@ -25,6 +25,7 @@ lazy val root = (project in file(".")).
 
 mainClass in (Compile, run) := Some("io.mwielocha.wm4sq.Main")
 
+val quillVersion             = "3.1.0"
 val akkaHttpVersion          = "10.1.7"
 val akkaVersion              = "2.5.21"
 val akkaHttpJsonVersion      = "1.25.2"
@@ -37,6 +38,7 @@ val scalaLoggingVersion      = "3.9.2"
 
 libraryDependencies ++= Seq(
   "io.getquill" %% "quill-async-mysql" % "3.1.0",
+  "net.sf.biweekly" % "biweekly" % "0.6.3",
   "ch.qos.logback"             % "logback-classic"         % logbackVersion,
   "com.typesafe.scala-logging" %% "scala-logging"          % scalaLoggingVersion,
   "de.heikoseeberger"          %% "akka-http-circe"        % akkaHttpJsonVersion,
