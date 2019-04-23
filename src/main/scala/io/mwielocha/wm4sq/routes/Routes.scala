@@ -99,7 +99,7 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with ICalenda
                   params = Uri.Query(
                     "v" -> "20190423",
                     "oauth_token" -> token,
-                    "limit" -> "10000"
+                    "limit" -> "100000"
                   )
                   request = HttpRequest(
                     method = HttpMethods.GET,
