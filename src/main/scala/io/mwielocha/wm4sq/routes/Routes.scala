@@ -98,7 +98,8 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with ICalenda
                   token <- OptionT.fromOption[Future](user.token)
                   params = Uri.Query(
                     "v" -> "20190423",
-                    "oauth_token" -> token
+                    "oauth_token" -> token,
+                    "limit" -> "10000"
                   )
                   request = HttpRequest(
                     method = HttpMethods.GET,
@@ -108,6 +109,7 @@ class Routes(config: Config) extends ErrorAccumulatingCirceSupport with ICalenda
                   checkins <- OptionT.liftF {
                     Unmarshal(response.entity).to[Checkins]
                   }
+                  _ = logger.info(s"Got ${checkins.count} checkins...")
                 } yield checkins.asCalendar).value
               }
             }
