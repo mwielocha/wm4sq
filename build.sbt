@@ -16,12 +16,18 @@ scalacOptions in ThisBuild := Seq(
   "utf8"
 )
 
-lazy val root = (project in file(".")).
-  settings(
+lazy val root = (project in file("."))
+  .enablePlugins(JavaAppPackaging)
+  .settings(
     name := "wm4sq",
     version := "1.0",
-    scalaVersion := "2.12.6"
+    organization := "io.mwielocha",
+    scalaVersion := "2.12.8"
   )
+
+publishArtifact in (Compile, packageDoc) in ThisBuild := false
+
+publishArtifact in packageDoc in ThisBuild := false
 
 mainClass in (Compile, run) := Some("io.mwielocha.wm4sq.Main")
 
