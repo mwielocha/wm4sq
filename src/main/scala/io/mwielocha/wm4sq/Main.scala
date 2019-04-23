@@ -20,6 +20,10 @@ object Main extends App {
   val routes = new Routes(config)
 
   for {
-    _ <- Http().bindAndHandle(routes(), "localhost",3000)
+    _ <- Http().bindAndHandle(
+      routes(),
+      config.getString("http.interface"),
+      config.getInt("http.port")
+    )
   } yield Await.result(system.whenTerminated, Duration.Inf)
 }
