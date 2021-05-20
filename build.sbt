@@ -45,7 +45,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging"          % scalaLoggingVersion,
   "de.heikoseeberger"          %% "akka-http-circe"        % akkaHttpJsonVersion,
   "com.typesafe.akka"          %% "akka-http"              % akkaHttpVersion,
-  "com.typesafe.akka"          %% "akka-http-xml"          % akkaHttpVersion,
   "com.typesafe.akka"          %% "akka-stream"            % akkaVersion,
   "io.circe"                   %% "circe-core"             % circeVersion,
   "io.circe"                   %% "circe-generic"          % circeVersion,
