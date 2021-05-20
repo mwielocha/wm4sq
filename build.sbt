@@ -22,11 +22,11 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.6"
   )
 
-publishArtifact in (Compile, packageDoc) in ThisBuild := false
+packageDoc / publishArtifact := false
 
-publishArtifact in packageDoc in ThisBuild := false
+packageDoc / publishArtifact := false
 
-mainClass in (Compile, run) := Some("io.mwielocha.wm4sq.Main")
+Compile / mainClass := Some("io.mwielocha.wm4sq.Main")
 
 val quillVersion             = "3.7.1"
 val biweeklyVersion          = "0.6.6"
