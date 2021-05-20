@@ -1,13 +1,8 @@
 package io.mwielocha.wm4sq.model.forsquare
 
-import io.circe.{Decoder, Encoder}
-import io.circe.derivation.{deriveDecoder, deriveEncoder}
+import io.circe.generic.JsonCodec
 
-object Venue {
-  implicit val encode: Encoder[Venue] = deriveEncoder
-  implicit val decode: Decoder[Venue] = deriveDecoder
-}
-
+@JsonCodec
 case class Venue(
   id: String,
   name: String,

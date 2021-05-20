@@ -1,8 +1,7 @@
 package io.mwielocha.wm4sq.model
-import java.util.UUID
+import io.circe.generic.JsonCodec
 
-import io.circe.derivation._
-import io.circe.{Decoder, Encoder}
+import java.util.UUID
 
 object User {
 
@@ -10,11 +9,9 @@ object User {
     def apply(): String =
       UUID.randomUUID().toString
   }
-
-  implicit val encode: Encoder[User] = deriveEncoder
-  implicit val decode: Decoder[User] = deriveDecoder
 }
 
+@JsonCodec
 case class User(
   id: String = User.Id(),
   token: Option[String] = None

@@ -1,13 +1,8 @@
 package io.mwielocha.wm4sq.model
 
-import io.circe.{Decoder, Encoder}
-import io.circe.derivation.{deriveDecoder, deriveEncoder}
+import io.circe.generic.JsonCodec
 
-object AccessToken {
-  implicit val encode: Encoder[AccessToken] = deriveEncoder
-  implicit val decode: Decoder[AccessToken] = deriveDecoder
-}
-
+@JsonCodec
 case class AccessToken(
   access_token: String
 )

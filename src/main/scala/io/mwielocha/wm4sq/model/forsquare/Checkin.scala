@@ -1,19 +1,15 @@
 package io.mwielocha.wm4sq.model.forsquare
 
 
-import java.util.Date
-
 import biweekly.component.VEvent
 import biweekly.property.Geo
-import io.circe.{Decoder, Encoder}
-import io.circe.derivation.{deriveDecoder, deriveEncoder}
+import io.circe.generic.JsonCodec
 import io.mwielocha.wm4sq.ical._
+
+import java.util.Date
 
 
 object Checkin {
-
-  implicit val encode: Encoder[Checkin] = deriveEncoder
-  implicit val decode: Decoder[Checkin] = deriveDecoder
 
   implicit val eventEncoder: EventEncoder[Checkin] = {
 
@@ -25,7 +21,7 @@ object Checkin {
       event.setDateStart(new Date(millis))
       event.setDateEnd(new Date(millis + (60 * 1000)))
       event.setGeo(new Geo(location.lat, location.lng))
-      event.setSummary(name)
+      event.setSummary(s"@$name")
       event.setLocation {
         Seq(
           location.address,
@@ -39,6 +35,7 @@ object Checkin {
   }
 }
 
+@JsonCodec
 case class Checkin(
   id: String,
   createdAt: Long,
