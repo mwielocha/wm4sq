@@ -82,3 +82,4 @@ prod-application.conf
 
 /foursquare_oath.secret.env
 /.bsp
+prod-application.conf
