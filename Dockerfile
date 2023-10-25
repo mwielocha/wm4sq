@@ -12,7 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get dist-upgrade -y
 
 COPY target/universal/wm4sq-1.0.zip /opt/
-COPY src/main/resources/application.conf /etc/wm4sq/
+COPY prod-application.conf /etc/wm4sq/application.conf
 
 RUN cd /opt && unzip wm4sq-1.0.zip && chmod u+x /opt/wm4sq-1.0/bin/wm4sq
 
